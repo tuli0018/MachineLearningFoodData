@@ -1,0 +1,2063 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Assignment\_python}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}import statements}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{html5lib}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{FoodFacts.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/IPython/core/interactiveshell.py:3058: DtypeWarning: Columns
+(0,3,5,27,36) have mixed types. Specify dtype option on import or set
+low\_memory=False.
+  interactivity=interactivity, compiler=compiler, result=result)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts}\PY{o}{.}\PY{n}{dtypes}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+code                        object
+url                         object
+creator                     object
+created\_t                   object
+created\_datetime            object
+                            {\ldots}
+cocoa\_100g                 float64
+chlorophyl\_100g            float64
+carbon\_footprint\_100g      float64
+nutrition\_score\_fr\_100g    float64
+nutrition\_score\_uk\_100g    float64
+Length: 159, dtype: object
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 code                                                url  \textbackslash{}
+0  000000000000012866  http://world-en.openfoodfacts.org/product/0000{\ldots}
+1       0000000024600  http://world-en.openfoodfacts.org/product/0000{\ldots}
+2       0000000036252  http://world-en.openfoodfacts.org/product/0000{\ldots}
+3       0000000039259  http://world-en.openfoodfacts.org/product/0000{\ldots}
+4       0000000039529  http://world-en.openfoodfacts.org/product/0000{\ldots}
+5       0000001071894  http://world-en.openfoodfacts.org/product/0000{\ldots}
+6       0000005200016  http://world-en.openfoodfacts.org/product/0000{\ldots}
+7       0000007020254  http://world-en.openfoodfacts.org/product/0000{\ldots}
+8       0000010090206  http://world-en.openfoodfacts.org/product/0000{\ldots}
+9       0000020364373  http://world-en.openfoodfacts.org/product/0000{\ldots}
+
+                      creator   created\_t      created\_datetime  \textbackslash{}
+0             date-limite-app  1447004364  2015-11-08T17:39:24Z
+1             date-limite-app  1434530704  2015-06-17T08:45:04Z
+2                     tacinte  1422221701  2015-01-25T21:35:01Z
+3                     tacinte  1422221773  2015-01-25T21:36:13Z
+4                    teolemon  1420147051  2015-01-01T21:17:31Z
+5                    bcatelin  1409411252  2014-08-30T15:07:32Z
+6                     sigoise  1441186657  2015-09-02T09:37:37Z
+7                    teolemon  1420150193  2015-01-01T22:09:53Z
+8                    sebleouf  1370977431  2013-06-11T19:03:51Z
+9  openfoodfacts-contributors  1393970573  2014-03-04T22:02:53Z
+
+  last\_modified\_t last\_modified\_datetime  \textbackslash{}
+0      1447004364   2015-11-08T17:39:24Z
+1      1434535914   2015-06-17T10:11:54Z
+2      1422221855   2015-01-25T21:37:35Z
+3      1422221926   2015-01-25T21:38:46Z
+4      1439141740   2015-08-09T17:35:40Z
+5      1439141739   2015-08-09T17:35:39Z
+6      1442570752   2015-09-18T10:05:52Z
+7      1420210373   2015-01-02T14:52:53Z
+8      1445083431   2015-10-17T12:03:51Z
+9      1393970733   2014-03-04T22:05:33Z
+
+                            product\_name generic\_name quantity  {\ldots}  \textbackslash{}
+0                 Poêlée à la sarladaise          NaN      NaN  {\ldots}
+1                          Filet de bœuf          NaN  2.46 kg  {\ldots}
+2                         Lion Peanut x2          NaN      NaN  {\ldots}
+3                                Twix x2          NaN      NaN  {\ldots}
+4                         Pack de 2 Twix          NaN      NaN  {\ldots}
+5                                  Flute        Flute      NaN  {\ldots}
+6                      lentilles vertes           NaN    1 kg   {\ldots}
+7                                    NaN          NaN      NaN  {\ldots}
+8  Thé de Noël aromatisé orange-cannelle          NaN     75 g  {\ldots}
+9                           Zumo de Piña          NaN      NaN  {\ldots}
+
+  caffeine\_100g taurine\_100g ph\_100g fruits\_vegetables\_nuts\_100g  \textbackslash{}
+0           NaN          NaN     NaN                         NaN
+1           NaN          NaN     NaN                         NaN
+2           NaN          NaN     NaN                         NaN
+3           NaN          NaN     NaN                         NaN
+4           NaN          NaN     NaN                         NaN
+5           NaN          NaN     NaN                         NaN
+6           NaN          NaN     NaN                         NaN
+7           NaN          NaN     NaN                         NaN
+8           NaN          NaN     NaN                         NaN
+9           NaN          NaN     NaN                         NaN
+
+  collagen\_meat\_protein\_ratio\_100g cocoa\_100g chlorophyl\_100g  \textbackslash{}
+0                              NaN        NaN             NaN
+1                              NaN        NaN             NaN
+2                              NaN        NaN             NaN
+3                              NaN        NaN             NaN
+4                              NaN        NaN             NaN
+5                              NaN        NaN             NaN
+6                              NaN        NaN             NaN
+7                              NaN        NaN             NaN
+8                              NaN        NaN             NaN
+9                              NaN        NaN             NaN
+
+  carbon\_footprint\_100g nutrition\_score\_fr\_100g nutrition\_score\_uk\_100g
+0                   NaN                     NaN                     NaN
+1                   NaN                     NaN                     NaN
+2                   NaN                     NaN                     NaN
+3                   NaN                     NaN                     NaN
+4                   NaN                     NaN                     NaN
+5                   NaN                     NaN                     NaN
+6                   NaN                     NaN                     NaN
+7                   NaN                     NaN                     NaN
+8                   NaN                     NaN                     NaN
+9                   NaN                     NaN                     NaN
+
+[10 rows x 159 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts}\PY{o}{.}\PY{n}{columns}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Index(['code', 'url', 'creator', 'created\_t', 'created\_datetime',
+       'last\_modified\_t', 'last\_modified\_datetime', 'product\_name',
+       'generic\_name', 'quantity',
+       {\ldots}
+       'caffeine\_100g', 'taurine\_100g', 'ph\_100g',
+       'fruits\_vegetables\_nuts\_100g', 'collagen\_meat\_protein\_ratio\_100g',
+       'cocoa\_100g', 'chlorophyl\_100g', 'carbon\_footprint\_100g',
+       'nutrition\_score\_fr\_100g', 'nutrition\_score\_uk\_100g'],
+      dtype='object', length=159)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{27}\PY{p}{,}\PY{l+m+mi}{36}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Index(['code', 'created\_t', 'last\_modified\_t', 'cities', 'allergens\_en'],
+dtype='object')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{code}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{created\PYZus{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{last\PYZus{}modified\PYZus{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cities}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{allergens\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                  code   created\_t last\_modified\_t cities allergens\_en
+0   000000000000012866  1447004364      1447004364    NaN          NaN
+1        0000000024600  1434530704      1434535914    NaN          NaN
+2        0000000036252  1422221701      1422221855    NaN          NaN
+3        0000000039259  1422221773      1422221926    NaN          NaN
+4        0000000039529  1420147051      1439141740    NaN          NaN
+5        0000001071894  1409411252      1439141739    NaN          NaN
+6        0000005200016  1441186657      1442570752    NaN          NaN
+7        0000007020254  1420150193      1420210373    NaN          NaN
+8        0000010090206  1370977431      1445083431    NaN          NaN
+9        0000020364373  1393970573      1393970733    NaN          NaN
+10       0000027533024  1418732959      1442914346    NaN          NaN
+11       0000027533048  1418732915      1439141741    NaN          NaN
+12       0000030053014  1430153513      1430153514    NaN          NaN
+13       0000040608754  1345024108      1439141731    NaN          NaN
+14            00000758  1409582884      1424687936    NaN          NaN
+15       0000084154071  1351359717      1440779523    NaN          NaN
+16       0000087177756  1433586486      1433589206    NaN          NaN
+17            00001373  1412788478      1441556289    NaN          NaN
+18            00002929  1424460617      1424829673    NaN          NaN
+19            00003100  1415119256      1428327438    NaN          NaN
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed} \PY{o}{=} \PY{n}{foodFacts}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{foodFacts}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{columns}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{27}\PY{p}{,}\PY{l+m+mi}{36}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Index(['code', 'created\_datetime', 'product\_name', 'purchase\_places',
+       'traces\_tags'],
+      dtype='object')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{columns}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Index(['code', 'url', 'creator', 'created\_datetime', 'last\_modified\_datetime',
+       'product\_name', 'generic\_name', 'quantity', 'packaging',
+       'packaging\_tags',
+       {\ldots}
+       'caffeine\_100g', 'taurine\_100g', 'ph\_100g',
+       'fruits\_vegetables\_nuts\_100g', 'collagen\_meat\_protein\_ratio\_100g',
+       'cocoa\_100g', 'chlorophyl\_100g', 'carbon\_footprint\_100g',
+       'nutrition\_score\_fr\_100g', 'nutrition\_score\_uk\_100g'],
+      dtype='object', length=157)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{percentage\PYZus{}UK} \PY{o}{=} \PY{p}{(}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{size}\PY{o}{/} \PYZbs{}
+      \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{size}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{100}
+\PY{n}{a} \PY{o}{=} \PY{n}{percentage\PYZus{}UK}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{str}\PY{p}{(}\PY{n}{a}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'48.0\%'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{caffeine\PYZus{}100g}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+32.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{str}\PY{p}{(}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{caffeine\PYZus{}100g} \PY{o}{==} \PY{l+m+mi}{32}\PY{p}{]}\PY{o}{.}\PY{n}{product\PYZus{}name}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'8861    Red Bull energy drink\textbackslash{}nName: product\_name, dtype: object'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{food\PYZus{}facts\PYZus{}arch\PYZus{}acid} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\PY{n}{food\PYZus{}facts\PYZus{}arch\PYZus{}acid}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+12756    0.090
+32423    0.082
+55289    0.064
+54897    0.044
+12835    0.007
+Name: arachidonic\_acid\_100g, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nlargest}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{product\PYZus{}name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              product\_name  arachidonic\_acid\_100g
+12756  Lait Gallia Calisma                  0.090
+32423     Dès la naissance                  0.082
+55289     Dès la naissance                  0.064
+54897        Nidal Natéa 2                  0.044
+12835    Gallia croissance                  0.007
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nlargest}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                code                                                url  \textbackslash{}
+12756  3041090001864  http://world-en.openfoodfacts.org/product/3041{\ldots}
+32423  3379365001449  http://world-en.openfoodfacts.org/product/3379{\ldots}
+55289  7613034726087  http://world-en.openfoodfacts.org/product/7613{\ldots}
+54897  7613032506636  http://world-en.openfoodfacts.org/product/7613{\ldots}
+12835  3041090086342  http://world-en.openfoodfacts.org/product/3041{\ldots}
+
+                          creator      created\_datetime  \textbackslash{}
+12756                    minouche  2012-06-30T11:29:50Z
+32423                  dnicolas80  2014-05-03T09:16:30Z
+55289  openfoodfacts-contributors  2014-11-23T09:05:39Z
+54897                    dalisson  2012-09-22T19:36:34Z
+12835  openfoodfacts-contributors  2014-11-04T00:19:24Z
+
+      last\_modified\_datetime         product\_name  \textbackslash{}
+12756   2014-02-02T22:59:40Z  Lait Gallia Calisma
+32423   2015-05-14T10:13:14Z     Dès la naissance
+55289   2015-10-31T16:50:32Z     Dès la naissance
+54897   2013-12-20T21:13:58Z        Nidal Natéa 2
+12835   2014-11-04T05:29:48Z    Gallia croissance
+
+                                            generic\_name quantity  \textbackslash{}
+12756                         Lait en poudre premier âge    900 g
+32423                               Lait pour nourissons    900 g
+55289  Lait pour nourrissons en poudre de la naissanc{\ldots}    820 g
+54897                         Lait infantile reconstitué    800 g
+12835                                                NaN    900 g
+
+              packaging    packaging\_tags  {\ldots} caffeine\_100g taurine\_100g  \textbackslash{}
+12756  Carton,Plastique  carton,plastique  {\ldots}           NaN        0.035
+32423             boite             boite  {\ldots}           NaN        0.039
+55289       Boîte,Métal       boite,metal  {\ldots}           NaN        0.035
+54897             Boîte             boite  {\ldots}           NaN          NaN
+12835         Bocal,Fer         bocal,fer  {\ldots}           NaN        0.037
+
+      ph\_100g fruits\_vegetables\_nuts\_100g collagen\_meat\_protein\_ratio\_100g  \textbackslash{}
+12756     NaN                         NaN                              NaN
+32423     NaN                         NaN                              NaN
+55289     NaN                         NaN                              NaN
+54897     NaN                         NaN                              NaN
+12835     NaN                         NaN                              NaN
+
+      cocoa\_100g chlorophyl\_100g carbon\_footprint\_100g  \textbackslash{}
+12756        NaN             NaN                   NaN
+32423        NaN             NaN                   NaN
+55289        NaN             NaN                   NaN
+54897        NaN             NaN                   NaN
+12835        NaN             NaN                   NaN
+
+      nutrition\_score\_fr\_100g nutrition\_score\_uk\_100g
+12756                    26.0                    26.0
+32423                    22.0                    22.0
+55289                    27.0                    27.0
+54897                    25.0                    25.0
+12835                    16.0                    16.0
+
+[5 rows x 157 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Based on this data, it seems like this data is depicting different
+products sold in the UK and France, their manufacturers, typical
+quantities they are sold in, their packaging information and most
+importantly, their nutritional value disected by multiple different
+compounds. All this data is used to aggregate a total nutrition score in
+France and UK.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{columns}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{n}{col}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+code
+url
+creator
+created\_datetime
+last\_modified\_datetime
+product\_name
+generic\_name
+quantity
+packaging
+packaging\_tags
+brands
+brands\_tags
+categories
+categories\_tags
+categories\_en
+origins
+origins\_tags
+manufacturing\_places
+manufacturing\_places\_tags
+labels
+labels\_tags
+labels\_en
+emb\_codes
+emb\_codes\_tags
+first\_packaging\_code\_geo
+cities
+cities\_tags
+purchase\_places
+stores
+countries
+countries\_tags
+countries\_en
+ingredients\_text
+allergens
+allergens\_en
+traces
+traces\_tags
+traces\_en
+serving\_size
+no\_nutriments
+additives\_n
+additives
+additives\_tags
+additives\_en
+ingredients\_from\_palm\_oil\_n
+ingredients\_from\_palm\_oil
+ingredients\_from\_palm\_oil\_tags
+ingredients\_that\_may\_be\_from\_palm\_oil\_n
+ingredients\_that\_may\_be\_from\_palm\_oil
+ingredients\_that\_may\_be\_from\_palm\_oil\_tags
+nutrition\_grade\_uk
+nutrition\_grade\_fr
+pnns\_groups\_1
+pnns\_groups\_2
+states
+states\_tags
+states\_en
+main\_category
+main\_category\_en
+image\_url
+image\_small\_url
+energy\_100g
+energy\_from\_fat\_100g
+fat\_100g
+saturated\_fat\_100g
+butyric\_acid\_100g
+caproic\_acid\_100g
+caprylic\_acid\_100g
+capric\_acid\_100g
+lauric\_acid\_100g
+myristic\_acid\_100g
+palmitic\_acid\_100g
+stearic\_acid\_100g
+arachidic\_acid\_100g
+behenic\_acid\_100g
+lignoceric\_acid\_100g
+cerotic\_acid\_100g
+montanic\_acid\_100g
+melissic\_acid\_100g
+monounsaturated\_fat\_100g
+polyunsaturated\_fat\_100g
+omega\_3\_fat\_100g
+alpha\_linolenic\_acid\_100g
+eicosapentaenoic\_acid\_100g
+docosahexaenoic\_acid\_100g
+omega\_6\_fat\_100g
+linoleic\_acid\_100g
+arachidonic\_acid\_100g
+gamma\_linolenic\_acid\_100g
+dihomo\_gamma\_linolenic\_acid\_100g
+omega\_9\_fat\_100g
+oleic\_acid\_100g
+elaidic\_acid\_100g
+gondoic\_acid\_100g
+mead\_acid\_100g
+erucic\_acid\_100g
+nervonic\_acid\_100g
+trans\_fat\_100g
+cholesterol\_100g
+carbohydrates\_100g
+sugars\_100g
+sucrose\_100g
+glucose\_100g
+fructose\_100g
+lactose\_100g
+maltose\_100g
+maltodextrins\_100g
+starch\_100g
+polyols\_100g
+fiber\_100g
+proteins\_100g
+casein\_100g
+serum\_proteins\_100g
+nucleotides\_100g
+salt\_100g
+sodium\_100g
+alcohol\_100g
+vitamin\_a\_100g
+beta\_carotene\_100g
+vitamin\_d\_100g
+vitamin\_e\_100g
+vitamin\_k\_100g
+vitamin\_c\_100g
+vitamin\_b1\_100g
+vitamin\_b2\_100g
+vitamin\_pp\_100g
+vitamin\_b6\_100g
+vitamin\_b9\_100g
+vitamin\_b12\_100g
+biotin\_100g
+pantothenic\_acid\_100g
+silica\_100g
+bicarbonate\_100g
+potassium\_100g
+chloride\_100g
+calcium\_100g
+phosphorus\_100g
+iron\_100g
+magnesium\_100g
+zinc\_100g
+copper\_100g
+manganese\_100g
+fluoride\_100g
+selenium\_100g
+chromium\_100g
+molybdenum\_100g
+iodine\_100g
+caffeine\_100g
+taurine\_100g
+ph\_100g
+fruits\_vegetables\_nuts\_100g
+collagen\_meat\_protein\_ratio\_100g
+cocoa\_100g
+chlorophyl\_100g
+carbon\_footprint\_100g
+nutrition\_score\_fr\_100g
+nutrition\_score\_uk\_100g
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x1195cc650>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{50}\PY{p}{]}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{categories}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{main\PYZus{}category\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                           categories  arachidonic\_acid\_100g  \textbackslash{}
+0                                                 NaN                    NaN
+1                                       Filet de bœuf                    NaN
+2                                                 NaN                    NaN
+3                                                 NaN                    NaN
+4                                                 NaN                    NaN
+5   Plant-based foods and beverages,Plant-based fo{\ldots}                    NaN
+6   Aliments et boissons à base de végétaux,Alimen{\ldots}                    NaN
+7                                           Root bier                    NaN
+8   Aliments et boissons à base de végétaux,Boisso{\ldots}                    NaN
+9                                                 NaN                    NaN
+10  Snacks sucrés,Desserts,Biscuits et gâteaux,Gât{\ldots}                    NaN
+11  Desserts,Sugary snacks,Biscuits and cakes,Cake{\ldots}                    NaN
+12                                                NaN                    NaN
+13                                      Sodas au cola                    NaN
+14  Plant-based foods and beverages,Plant-based fo{\ldots}                    NaN
+15   Comestibles,Condimentos,Salsas,Salsas de mostaza                    NaN
+16                   Sodas au citron,Boissons sucrées                    NaN
+17  Plant-based foods and beverages,Plant-based fo{\ldots}                    NaN
+18                         Flat Parsley,Parsley,Herbs                    NaN
+19                                    Viandes de porc                    NaN
+20                              Chips,Chips and fries                    NaN
+21                                                NaN                    NaN
+22              Sugary snacks,Confectioneries,Candies                    NaN
+23              Sugary snacks,Confectioneries,Candies                    NaN
+24                                            Bonbons                    NaN
+25                                                NaN                    NaN
+26                                             onions                    NaN
+27                                               Soda                    NaN
+28                                                NaN                    NaN
+29                        Gâteaux,Goûters individuels                    NaN
+30                                Foie gras de canard                    NaN
+31                                                NaN                    NaN
+32                                                NaN                    NaN
+33                                                NaN                    NaN
+34                                                NaN                    NaN
+35                                                NaN                    NaN
+36                                                NaN                    NaN
+37                                Foie gras de canard                    NaN
+38                          fr:Pâté au foie de canard                    NaN
+39                                                NaN                    NaN
+40              Bloc de foie gras,Foie gras de canard                    NaN
+41                                                NaN                    NaN
+42  foie gras de canard aux cèpes,tartinable au fo{\ldots}                    NaN
+43                               Foies gras de d'oies                    NaN
+44                                 Foie gras de d'oie                    NaN
+45                                                NaN                    NaN
+46                    fr:Bonbons à la menthe,en:mints                    NaN
+47                                                NaN                    NaN
+48                                            Cookies                    NaN
+49                                                NaN                    NaN
+
+                countries               countries\_tags  \textbackslash{}
+0                   en:FR                    en:france
+1                  France                    en:france
+2                  France                    en:france
+3                  France                    en:france
+4                  France                    en:france
+5          United Kingdom            en:united-kingdom
+6                  France                    en:france
+7                  France                    en:france
+8                  France                    en:france
+9                   en:ES                     en:spain
+10            Royaume-Uni            en:united-kingdom
+11         United Kingdom            en:united-kingdom
+12                  en:FR                    en:france
+13                 France                    en:france
+14         United Kingdom            en:united-kingdom
+15                 España                     en:spain
+16                 France                    en:france
+17         United Kingdom            en:united-kingdom
+18         United Kingdom            en:united-kingdom
+19                 France                    en:france
+20          United States             en:united-states
+21                  en:GB            en:united-kingdom
+22                Germany                   en:germany
+23                Germany                   en:germany
+24                    Usa             en:united-states
+25                  en:GB            en:united-kingdom
+26         United Kingdom            en:united-kingdom
+27                 France                    en:france
+28                  en:FR                    en:france
+29                 France                    en:france
+30                 France                    en:france
+31                  en:FR                    en:france
+32                  en:FR                    en:france
+33                  en:FR                    en:france
+34                  en:FR                    en:france
+35                  en:FR                    en:france
+36                  en:FR                    en:france
+37                 France                    en:france
+38                 France                    en:france
+39                  en:FR                    en:france
+40                 France                    en:france
+41                  en:FR                    en:france
+42                 France                    en:france
+43                 France                    en:france
+44                 France                    en:france
+45                  en:FR                    en:france
+46  France,United Kingdom  en:france,en:united-kingdom
+47                  en:FR                    en:france
+48                 France                    en:france
+49                 France                    en:france
+
+                   main\_category\_en
+0                               NaN
+1                 fr:Filet-de-boeuf
+2                               NaN
+3                               NaN
+4                               NaN
+5   Plant-based foods and beverages
+6   Plant-based foods and beverages
+7                      fr:Root-bier
+8                         Beverages
+9                               NaN
+10                         Desserts
+11                    Sugary snacks
+12                              NaN
+13                        Beverages
+14  Plant-based foods and beverages
+15                        Groceries
+16                        Beverages
+17  Plant-based foods and beverages
+18                        Groceries
+19                            Meats
+20                  Chips and fries
+21                              NaN
+22                    Sugary snacks
+23                    Sugary snacks
+24                    Sugary snacks
+25                              NaN
+26                        Groceries
+27                        Beverages
+28                              NaN
+29                    Sugary snacks
+30           Fish and meat and eggs
+31                              NaN
+32                              NaN
+33                              NaN
+34                              NaN
+35                              NaN
+36                              NaN
+37           Fish and meat and eggs
+38        fr:Pate-au-foie-de-canard
+39                              NaN
+40           Fish and meat and eggs
+41                              NaN
+42           Fish and meat and eggs
+43           Fish and meat and eggs
+44           Fish and meat and eggs
+45                              NaN
+46                        Groceries
+47                              NaN
+48                    Sugary snacks
+49                              NaN
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{arachidonic\PYZus{}acid\PYZus{}100g} \PY{o}{==}\PYZbs{}
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PYZbs{}
+\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{product\PYZus{}name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{main\PYZus{}category\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              product\_name  arachidonic\_acid\_100g countries countries\_tags  \textbackslash{}
+12756  Lait Gallia Calisma                   0.09    France      en:france
+
+      main\_category\_en
+12756       Baby foods
+\end{Verbatim}
+\end{tcolorbox}
+        
+    What this tells us is that Baby foods in France have the highest amount
+of arachidonic acid per 100 grams of product. Since arachidonic acid is
+promotes the growth and repair of skeletal muscle and bone growth, its
+presence in high quantities in baby food makes sense. Now looking at the
+top 5 product main categories that have the highest arachidonic acid per
+100 grams of product, below.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nlargest}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PYZbs{}
+\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{product\PYZus{}name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arachidonic\PYZus{}acid\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{countries\PYZus{}tags}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{main\PYZus{}category\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+              product\_name  arachidonic\_acid\_100g countries countries\_tags  \textbackslash{}
+12756  Lait Gallia Calisma                  0.090    France      en:france
+32423     Dès la naissance                  0.082    France      en:france
+55289     Dès la naissance                  0.064    France      en:france
+54897        Nidal Natéa 2                  0.044    France      en:france
+12835    Gallia croissance                  0.007    France      en:france
+
+      main\_category\_en
+12756       Baby foods
+32423       Baby foods
+55289       Baby foods
+54897       Baby foods
+12835       Baby foods
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The data frame instance sliced above confirms that high presence of
+arachidonic acid per 100 grams of product is found in Baby foods.
+Additionally, we can also infer the top 5 products in that category
+along with their country of origin: France.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{main\PYZus{}category\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x11a9291d0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{Verbatim}[commandchars=\\\{\}]
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12473
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12490
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12483
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12463
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 33747
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 23376
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 29006
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 33590
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 37284
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 27833
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12402
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12394
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12354
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12425
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12428
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12459
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12501
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12521
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12540
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12513
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12531
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12461
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12515
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12486
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12451
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12488
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12522
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12520
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12523
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12358
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12414
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 12356
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:211: RuntimeWarning: Glyph 26834
+missing from current font.
+  font.set\_text(s, 0.0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12473
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12490
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12483
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12463
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 33747
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 23376
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 29006
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 33590
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 37284
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 27833
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12402
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12394
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12354
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12425
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12428
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12459
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12501
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12521
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12540
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12513
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12531
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12461
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12515
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12486
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12451
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12488
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12522
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12520
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12523
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12358
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12414
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 12356
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+/Users/a1394620/opt/anaconda3/lib/python3.7/site-
+packages/matplotlib/backends/backend\_agg.py:180: RuntimeWarning: Glyph 26834
+missing from current font.
+  font.set\_text(s, 0, flags=flags)
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{100}\PY{p}{]}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x13631dad0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x12f700590>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}fr\PYZus{}nutritional\PYZus{}count} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}fr\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\PY{n}{total\PYZus{}fr\PYZus{}nutritional\PYZus{}sum} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}fr\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}uk\PYZus{}nutritional\PYZus{}count} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\PY{n}{total\PYZus{}uk\PYZus{}nutritional\PYZus{}sum} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}fr\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}mean} \PY{o}{=} \PY{p}{(}\PY{n}{total\PYZus{}fr\PYZus{}nutritional\PYZus{}sum} \PY{o}{+} \PY{n}{total\PYZus{}uk\PYZus{}nutritional\PYZus{}sum}\PY{p}{)}\PY{o}{/} \PY{p}{(}\PY{n}{total\PYZus{}fr\PYZus{}nutritional\PYZus{}count} \PY{o}{+} \PY{n}{total\PYZus{}uk\PYZus{}nutritional\PYZus{}count}\PY{p}{)}
+\PY{n}{total\PYZus{}mean}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+7.948168978078865
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{52}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mean\PYZus{}fr\PYZus{}nutrition} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}fr\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{mean\PYZus{}uk\PYZus{}nutrition} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{mean\PYZus{}fr\PYZus{}nutrition}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{mean\PYZus{}uk\PYZus{}nutrition}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+7.948168978078865
+7.68719243305426
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fr\PYZus{}min} \PY{o}{=} \PY{p}{(}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}fr\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{fr\PYZus{}max} \PY{o}{=} \PY{p}{(}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}fr\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{uk\PYZus{}min} \PY{o}{=} \PY{p}{(}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{uk\PYZus{}max} \PY{o}{=} \PY{p}{(}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{62}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{fr\PYZus{}min}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{fr\PYZus{}max}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{uk\PYZus{}min}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{uk\PYZus{}max}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-14.0
+35.0
+-14.0
+33.0
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fr\PYZus{}mean} \PY{o}{=} \PY{n}{mean\PYZus{}fr\PYZus{}nutrition}\PY{o}{/}\PY{p}{(}\PY{n}{fr\PYZus{}min} \PY{o}{+} \PY{n}{fr\PYZus{}max}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{100}
+\PY{n}{fr\PYZus{}mean}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{65}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+37.84842370513745
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{uk\PYZus{}mean} \PY{o}{=} \PY{n}{mean\PYZus{}uk\PYZus{}nutrition}\PY{o}{/}\PY{p}{(}\PY{n}{uk\PYZus{}min} \PY{o}{+} \PY{n}{uk\PYZus{}max}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{100}
+\PY{n}{uk\PYZus{}mean}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{66}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+40.45890754239084
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}mean\PYZus{}percentage} \PY{o}{=} \PY{p}{(}\PY{n}{fr\PYZus{}mean} \PY{o}{+} \PY{n}{uk\PYZus{}mean}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}
+\PY{n}{total\PYZus{}mean\PYZus{}percentage}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{67}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+39.15366562376414
+\end{Verbatim}
+\end{tcolorbox}
+        
+    With a total average nutritional score percentage of 39.15\%, majority
+of food types in this dataset are unhealthy. They need to be an average
+of 50\% or above to be certified as a majorly healthy dataset of food
+types and categories. That being said, the average nutritional score
+percentage of the same food types is higher in the UK (37.84\%) versus
+France. (40.45\%).
+
+This data set is skewed since there is no explanation of why a
+nutritional score would max out at 35/33 and go into negative values.
+The formula of calculating the nutritional score is unknown which makes
+this data set flawed.
+
+The other reason of why this data set is not a 100 percent accurate is
+that the contributors of this data are not certified government bodies
+who have proofs of the reliability of this data.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{creator}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{50}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{68}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0                date-limite-app
+1                date-limite-app
+2                        tacinte
+3                        tacinte
+4                       teolemon
+5                       bcatelin
+6                        sigoise
+7                       teolemon
+8                       sebleouf
+9     openfoodfacts-contributors
+10                       tacinte
+11                       tacinte
+12               date-limite-app
+13                         andre
+14                       tacinte
+15                       javichu
+16                        tacite
+17                       tacinte
+18                       tacinte
+19    openfoodfacts-contributors
+20    openfoodfacts-contributors
+21                          kyzh
+22                      malikele
+23                      malikele
+24                      malikele
+25                          kyzh
+26                          kyzh
+27    openfoodfacts-contributors
+28               date-limite-app
+29                       beniben
+30               date-limite-app
+31               date-limite-app
+32               date-limite-app
+33               date-limite-app
+34               date-limite-app
+35               date-limite-app
+36               date-limite-app
+37               date-limite-app
+38               date-limite-app
+39               date-limite-app
+40               date-limite-app
+41               date-limite-app
+42               date-limite-app
+43               date-limite-app
+44               date-limite-app
+45    openfoodfacts-contributors
+46    openfoodfacts-contributors
+47                      teolemon
+48    openfoodfacts-contributors
+49                      teolemon
+Name: creator, dtype: object
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{77}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}unique\PYZus{}creators} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{creator}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\PY{n}{total\PYZus{}unique\PYZus{}creators}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{77}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+65435
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}openfoodfacts\PYZus{}contributors} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{creator}\PY{p}{[}\PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{creator} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{openfoodfacts\PYZhy{}contributors}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{size}
+\PY{n}{total\PYZus{}openfoodfacts\PYZus{}contributors}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{76}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+15814
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{total\PYZus{}openfoodfacts\PYZus{}contributor\PYZus{}percentage} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{total\PYZus{}openfoodfacts\PYZus{}contributors}\PY{o}{/}\PY{n}{total\PYZus{}unique\PYZus{}creators}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{)}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{)}
+\PY{n}{total\PYZus{}openfoodfacts\PYZus{}contributor\PYZus{}percentage}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{78}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+24.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{81}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{top10Creators} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{o}{.}\PY{n}{creator}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{top10Creators}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{81}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+openfoodfacts-contributors    15814
+tacite                         4452
+date-limite-app                3980
+sebleouf                       3260
+tacinte                        3189
+javichu                        2544
+stephane                       2367
+jeanbono                       1721
+miles67off                     1406
+teolemon                       1277
+Name: creator, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{bar\PYZus{}graph} \PY{o}{=} \PY{n}{top10Creators}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{88}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{modelling\PYZus{}df} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\PY{n}{modelling\PYZus{}df}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{88}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    fat\_100g  nutrition\_score\_uk\_100g
+10       7.0                     10.0
+11       7.0                     10.0
+13       0.0                      2.0
+16       0.0                      2.0
+22       0.0                     14.0
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{89}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{modelling\PYZus{}df}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{89}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x12f0d33d0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_45_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{90}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{modelling\PYZus{}df}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.7}
+\PY{n}{train} \PY{o}{=} \PY{n}{modelling\PYZus{}df}\PY{p}{[}\PY{n}{mask}\PY{p}{]}
+\PY{n}{test} \PY{o}{=} \PY{n}{modelling\PYZus{}df}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{mask}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{91}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LinearRegression}
+\PY{n}{x\PYZus{}train} \PY{o}{=} \PY{n}{train}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{model} \PY{o}{=} \PY{n}{LinearRegression}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{95}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x\PYZus{}test} \PY{o}{=} \PY{n}{test}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{predicted} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{95}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.4412427566489327
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{98}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{test}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{predicted}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{98}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[<matplotlib.lines.Line2D at 0x12f83a350>]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_49_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    These results do not surprise me since it is clear that items that are
+high in nutrition majorly have low to medium fat per 100 grams of item.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{interesting\PYZus{}df\PYZus{}1} \PY{o}{=} \PY{n}{foodFacts\PYZus{}3and5Removed}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{main\PYZus{}category\PYZus{}en}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{122}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{interesting\PYZus{}df\PYZus{}2} \PY{o}{=} \PY{n}{interesting\PYZus{}df\PYZus{}1}\PY{p}{[}\PY{n}{interesting\PYZus{}df\PYZus{}1}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n}{final\PYZus{}interesting\PYZus{}df} \PY{o}{=} \PY{n}{interesting\PYZus{}df\PYZus{}2}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fat\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nutrition\PYZus{}score\PYZus{}uk\PYZus{}100g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ValueError                                Traceback (most recent call last)
+
+        <ipython-input-122-c649f322cbae> in <module>
+          1 interesting\_df\_2 = interesting\_df\_1[interesting\_df\_1['nutrition\_score\_uk\_100g'].isin([15, 28])]
+    ----> 2 final\_interesting\_df = interesting\_df\_2.sort\_values('fat\_100g','nutrition\_score\_uk\_100g',ascending=False)
+    
+
+        \textasciitilde{}/opt/anaconda3/lib/python3.7/site-packages/pandas/core/frame.py in sort\_values(self, by, axis, ascending, inplace, kind, na\_position)
+       4972     ):
+       4973         inplace = validate\_bool\_kwarg(inplace, "inplace")
+    -> 4974         axis = self.\_get\_axis\_number(axis)
+       4975 
+       4976         if not isinstance(by, list):
+
+
+        \textasciitilde{}/opt/anaconda3/lib/python3.7/site-packages/pandas/core/generic.py in \_get\_axis\_number(cls, axis)
+        409             except KeyError:
+        410                 pass
+    --> 411         raise ValueError("No axis named \{0\} for object type \{1\}".format(axis, cls))
+        412 
+        413     @classmethod
+
+
+        ValueError: No axis named nutrition\_score\_uk\_100g for object type <class 'pandas.core.frame.DataFrame'>
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{final\PYZus{}interesting\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{60}\PY{p}{)}\PY{o}{.}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                      main\_category\_en  nutrition\_score\_uk\_100g  fat\_100g
+19775  Plant-based foods and beverages                     15.0     100.0
+29594  Plant-based foods and beverages                     15.0     100.0
+4247   Plant-based foods and beverages                     15.0     100.0
+50271  Plant-based foods and beverages                     15.0     100.0
+33909  Plant-based foods and beverages                     15.0      90.0
+48353                          Spreads                     28.0      80.5
+22298                          Spreads                     28.0      80.0
+28355                      Fresh foods                     28.0      80.0
+46935                          Spreads                     28.0      80.0
+26339                          Spreads                     28.0      80.0
+29028                          Spreads                     28.0      80.0
+28356                          Spreads                     28.0      80.0
+41862                          Spreads                     28.0      80.0
+22294                      Fresh foods                     28.0      80.0
+34282                          Spreads                     28.0      80.0
+22297                          Spreads                     28.0      80.0
+20443                          Spreads                     28.0      80.0
+15481                          Spreads                     28.0      80.0
+35340                      Fresh foods                     28.0      80.0
+35337                          Spreads                     28.0      80.0
+14855                          Spreads                     28.0      80.0
+62301                          Spreads                     28.0      80.0
+63308          fr:Cuisson-des-aliments                     28.0      79.0
+54893                        Groceries                     15.0      76.1
+3143                         Groceries                     15.0      74.5
+51086                              NaN                     15.0      74.0
+63246  Plant-based foods and beverages                     15.0      70.0
+2952                         Groceries                     15.0      60.7
+7849   Plant-based foods and beverages                     15.0      60.3
+53328  Plant-based foods and beverages                     15.0      59.4
+50580                        Groceries                     15.0      57.0
+64991  Plant-based foods and beverages                     15.0      54.0
+23195                          Seafood                     15.0      53.2
+41745                    Sugary snacks                     15.0      53.2
+13280  Plant-based foods and beverages                     15.0      52.7
+55107                    Sugary snacks                     15.0      51.9
+34757                    Sugary snacks                     15.0      51.2
+25947                    Sugary snacks                     15.0      51.0
+49608                    Sugary snacks                     15.0      51.0
+28018  Plant-based foods and beverages                     15.0      51.0
+16141  Plant-based foods and beverages                     15.0      51.0
+18203                    Sugary snacks                     15.0      51.0
+38558                        Groceries                     15.0      51.0
+40065  Plant-based foods and beverages                     15.0      50.8
+23374  Plant-based foods and beverages                     15.0      50.4
+30250  Plant-based foods and beverages                     15.0      50.4
+16079  Plant-based foods and beverages                     15.0      50.0
+62580                    Sugary snacks                     15.0      50.0
+56881  Plant-based foods and beverages                     15.0      50.0
+26346  Plant-based foods and beverages                     15.0      50.0
+32009  Plant-based foods and beverages                     15.0      50.0
+1619   Plant-based foods and beverages                     15.0      50.0
+1632   Plant-based foods and beverages                     15.0      50.0
+55753                              NaN                     15.0      50.0
+3068                     Sugary snacks                     15.0      50.0
+18834                    Sugary snacks                     15.0      50.0
+60241  Plant-based foods and beverages                     15.0      49.7
+48350                    Sugary snacks                     15.0      49.0
+17791  Plant-based foods and beverages                     15.0      49.0
+1620   Plant-based foods and beverages                     15.0      48.5
+\end{Verbatim}
+\end{tcolorbox}
+        
+    From the above mentioned dataframe, it seems like plant based foods \&
+beverages, and spreads are a few product categories that have high
+nutrition as well as high fat.
+
+Majority of the items with that have a high overall nutrition score from
+the dataset, also have fat content between 0 to 50 grams of fat per 100
+grams of item(s), with maximum spread at 0 and least spread at 50.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
